@@ -2,7 +2,6 @@ import itertools
 import subprocess
 import os
 
-# 1. Graph definition from your image
 nodes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
 node_to_int = {node: i + 1 for i, node in enumerate(nodes)}
 edges = [
@@ -26,20 +25,19 @@ def run_minisat(k):
         clauses.append([-node_to_int[n] for n in combo])
 
     # Write DIMACS file
-    with open("temp.cnf", "w") as f:
+    with open("vertex_cover.cnf", "w") as f:
         f.write(f"p cnf {len(nodes)} {len(clauses)}\n")
         for c in clauses:
             f.write(" ".join(map(str, c)) + " 0\n")
 
-    # Execute MiniSat (Check if minisat is in your PATH or current folder)
     try:
-        subprocess.run(['minisat', 'temp.cnf', 'out.txt'], capture_output=True, text=True)
+        subprocess.run(['minisat', 'vertex_cover.cnf', 'problem1c.txt'], capture_output=True, text=True)
     except FileNotFoundError:
         return "MINISAT NOT FOUND", []
     
-    if not os.path.exists("out.txt"): return "ERROR", []
+    if not os.path.exists("problem1c.txt"): return "ERROR", []
     
-    with open("out.txt", "r") as f:
+    with open("problem1c.txt", "r") as f:
         result = f.readline().strip()
         if result == "SAT":
             assignment = f.readline().split()

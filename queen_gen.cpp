@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// Helper: Converts (row, col) to a variable ID from 1 to 64
+// Converts (row, col) to a variable ID from 1 to 64
 int id(int r, int c) {
     return (r * 8) + c + 1;
 }
