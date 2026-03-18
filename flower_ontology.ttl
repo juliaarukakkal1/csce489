@@ -1,0 +1,76 @@
+@prefix : <http://www.garden-ontology.org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://www.garden-ontology.org> rdf:type owl:Ontology ;
+    rdfs:comment "A preliminary taxonomy for garden flowers based on life cycle and sun requirements." .
+
+### --- 1. Classes (The Hierarchy) ---
+
+:Flower rdf:type owl:Class .
+
+# Life Cycle Categories (Disjoint)
+:LifeCycle rdf:type owl:Class .
+:Annual rdfs:subClassOf :LifeCycle ;
+        owl:disjointWith :Perennial .
+:Perennial rdfs:subClassOf :LifeCycle .
+
+# Sun Requirement Categories
+:SunRequirement rdf:type owl:Class .
+:FullSun rdfs:subClassOf :SunRequirement .
+:PartialShade rdfs:subClassOf :SunRequirement .
+:FullShade rdfs:subClassOf :SunRequirement .
+
+# Symmetry (Botanical Taxonomy)
+:FlowerSymmetry rdf:type owl:Class .
+:Actinomorphic rdfs:subClassOf :FlowerSymmetry ; 
+               rdfs:comment "Radially symmetric like a Daisy." .
+:Zygomorphic rdfs:subClassOf :FlowerSymmetry ;
+             rdfs:comment "Bilaterally symmetric like an Orchid." .
+
+### --- 2. Object Properties (The Links) ---
+
+:hasLifeCycle rdf:type owl:ObjectProperty ;
+              rdfs:domain :Flower ;
+              rdfs:range :LifeCycle .
+
+:requiresLight rdf:type owl:ObjectProperty ;
+               rdfs:domain :Flower ;
+               rdfs:range :SunRequirement .
+
+### --- 3. Defined Classes (The Logic) ---
+
+# This class will automatically capture any Perennial that likes Full Shade.
+:ShadePerennial rdf:type owl:Class ;
+    owl:equivalentClass [ 
+        owl:intersectionOf ( :Flower 
+                             [ rdf:type owl:Restriction ; owl:onProperty :hasLifeCycle ; owl:someValuesFrom :Perennial ]
+                             [ rdf:type owl:Restriction ; owl:onProperty :requiresLight ; owl:someValuesFrom :FullShade ]
+                           )
+    ] .
+
+# This class captures Sun-loving Annuals (Low maintenance summer flowers)
+:SunAnnual rdf:type owl:Class ;
+    owl:equivalentClass [ 
+        owl:intersectionOf ( :Flower 
+                             [ rdf:type owl:Restriction ; owl:onProperty :hasLifeCycle ; owl:someValuesFrom :Annual ]
+                             [ rdf:type owl:Restriction ; owl:onProperty :requiresLight ; owl:someValuesFrom :FullSun ]
+                           )
+    ] .
+
+### --- 4. Individuals (Instances) ---
+
+:HostaBlueAngel rdf:type :Flower , owl:NamedIndividual ;
+                :hasLifeCycle :Perennial ;
+                :requiresLight :FullShade .
+
+:MammothSunflower rdf:type :Flower , owl:NamedIndividual ;
+                  :hasLifeCycle :Annual ;
+                  :requiresLight :FullSun .
+
+:EnglishLavender rdf:type :Flower , owl:NamedIndividual ;
+                 :hasLifeCycle :Perennial ;
+                 :requiresLight :FullSun .
