@@ -1,0 +1,18 @@
+(deffacts initial-maze
+   (grid-size 5 5)
+   (number 1) (number 2) (number 3) (number 4) (number 5)
+   
+   (pacman 1 1)
+   (ghost 5 5)
+   (turn pacman)
+   
+   ;; Add some food
+   (pellet 2 2)
+   (pellet 4 4)
+   (pellet 1 5)
+   
+   ;; Add some obstacles
+   (wall 3 2)
+   (wall 3 3)
+   (wall 3 4)
+)
