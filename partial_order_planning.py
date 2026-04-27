@@ -15,5 +15,14 @@ class POP:
         self.finish = Action("Finish", goal_state, [])
 
 
+library = [
+    Action("Sock_L", [], ["HasSock_L"]),
+    Action("Sock_R", [], ["HasSock_R"]),
+    Action("Shoe_L", ["HasSock_L"], ["HasShoe_L"]),
+    Action("Shoe_R", ["HasSock_R"], ["HasShoe_R"])
+]
+
 init = ["At_Home"]
 goal = ["HasShoe_L", "HasShoe_R"]
+
+planner = POP(library, init, goal)
