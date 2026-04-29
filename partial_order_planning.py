@@ -11,8 +11,17 @@ class Action:
     
 class POP:
     def __init__(self, actions, initial_state, goal_state):
+        self.library = library
         self.start = Action("Start", [], initial_state)
         self.finish = Action("Finish", goal_state, [])
+
+        self.initial_plan = {
+            'actions':{self.start, self.finish},
+            'constraints':{(self.start, self.finish)},
+            'links':{},
+            'agenda':{(pre, self.finish) for pre in self.finish.preconds},
+        } 
+
 
 
 library = [
