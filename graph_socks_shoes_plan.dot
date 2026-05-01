@@ -1,0 +1,65 @@
+digraph GraphPlan {
+    rankdir=LR;
+    node [fontname="Arial", shape=rect, style=filled, fillcolor=white];
+    compound=true;
+
+    // --- State Level 0 ---
+    subgraph cluster_S0 {
+        label = "State Level S0";
+        bgcolor = "#f9f9f9";
+        S0_AtHome [label="At_Home", fillcolor="#e1f5fe"];
+    }
+
+    // --- Action Level 1 ---
+    subgraph cluster_A1 {
+        label = "Action Level A1";
+        bgcolor = "#fff3e0";
+        A1_SockL [label="Sock_L", fillcolor="#ffe0b2"];
+        A1_SockR [label="Sock_R", fillcolor="#ffe0b2"];
+        A1_NoOp [label="No-Op", shape=none, fontcolor=grey];
+    }
+
+    // --- State Level 1 ---
+    subgraph cluster_S1 {
+        label = "State Level S1";
+        bgcolor = "#f9f9f9";
+        S1_SockL [label="HasSock_L", fillcolor="#e1f5fe"];
+        S1_SockR [label="HasSock_R", fillcolor="#e1f5fe"];
+        S1_AtHome [label="At_Home", fillcolor="#e1f5fe"];
+    }
+
+    // --- Action Level 2 ---
+    subgraph cluster_A2 {
+        label = "Action Level A2";
+        bgcolor = "#fff3e0";
+        A2_ShoeL [label="Shoe_L", fillcolor="#ffe0b2"];
+        A2_ShoeR [label="Shoe_R", fillcolor="#ffe0b2"];
+    }
+
+    // --- State Level 2 (GOAL) ---
+    subgraph cluster_S2 {
+        label = "State Level S2 (Goal)";
+        bgcolor = "#e8f5e9";
+        S2_ShoeL [label="HasShoe_L", fillcolor="#c8e6c9", penwidth=2];
+        S2_ShoeR [label="HasShoe_R", fillcolor="#c8e6c9", penwidth=2];
+    }
+
+    // --- Connections ---
+    // S0 to A1
+    S0_AtHome -> A1_SockL;
+    S0_AtHome -> A1_SockR;
+    S0_AtHome -> A1_NoOp [color=grey, style=dashed];
+
+    // A1 to S1
+    A1_SockL -> S1_SockL;
+    A1_SockR -> S1_SockR;
+    A1_NoOp  -> S1_AtHome [color=grey, style=dashed];
+
+    // S1 to A2
+    S1_SockL -> A2_ShoeL;
+    S1_SockR -> A2_ShoeR;
+
+    // A2 to S2
+    A2_ShoeL -> S2_ShoeL;
+    A2_ShoeR -> S2_ShoeR;
+}
