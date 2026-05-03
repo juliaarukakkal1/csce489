@@ -1,0 +1,30 @@
+digraph POP_Plan {
+    rankdir=LR;
+    node [shape=box, style=filled, color=lightblue, fontname="Arial"];
+    
+    // Nodes
+    START  [fillcolor=lightgrey];
+    FINISH [fillcolor=lightgrey];
+    
+    Sock_L [label="Put on Left Sock"];
+    Sock_R [label="Put on Right Sock"];
+    Shoe_L [label="Put on Left Shoe"];
+    Shoe_R [label="Put on Right Shoe"];
+
+    // Causal Links (Solid lines with labels)
+    START -> Sock_L [label="At Home"];
+    START -> Sock_R [label="At Home"];
+    
+    Sock_L -> Shoe_L [label="HasSock_L", fontcolor=blue, color=blue];
+    Sock_R -> Shoe_R [label="HasSock_R", fontcolor=darkgreen, color=darkgreen];
+    
+    Shoe_L -> FINISH [label="HasShoe_L"];
+    Shoe_R -> FINISH [label="HasShoe_R"];
+
+    // Temporal Ordering (Dashed lines to show constraints)
+    edge [style=dashed, color=grey, fontcolor=grey, label=""];
+    START -> Shoe_L;
+    START -> Shoe_R;
+    Sock_L -> FINISH;
+    Sock_R -> FINISH;
+}
