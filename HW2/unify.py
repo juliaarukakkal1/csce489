@@ -1,5 +1,5 @@
 import sys
-from convCNF import *
+from HW1.convCNF import *
 
 def is_variable(expr):
     """Checks if the expression is a variable (typically starts with '?')."""
